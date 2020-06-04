@@ -1,0 +1,3 @@
+include ':speedview'
+include ':app'
+rootProject.name = "SpeedView"
