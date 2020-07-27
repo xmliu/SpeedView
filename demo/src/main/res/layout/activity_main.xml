@@ -9,6 +9,8 @@
         <cn.xmliu.speedview.SpeedView
             android:id="@+id/speedView"
             android:layout_gravity="center_horizontal"
+            app:bgColor="#00000000"
+            app:lineColor="#000000"
             android:layout_width="400dp"
             android:layout_height="220dp"/>
 

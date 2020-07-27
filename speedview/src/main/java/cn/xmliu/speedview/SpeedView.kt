@@ -14,12 +14,19 @@ import android.view.View
 import kotlin.math.cos
 import kotlin.math.sin
 
+
 class SpeedView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
     /**
      * 当前速度，单位km/h
      */
     private var curSpeed: Int = -1
+
+    private var bgColor = 0
+
+    private var lineColor = 0
+
+    private var pointColor = 0
 
     /**
      * 画笔
@@ -64,6 +71,12 @@ class SpeedView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
     private val numberArr: MutableList<String> = mutableListOf()
 
     init {
+        val ta = context!!.obtainStyledAttributes(attrs, R.styleable.SpeedView)
+        bgColor = ta.getColor(R.styleable.SpeedView_bgColor,Color.parseColor("#000000"));
+        lineColor = ta.getColor(R.styleable.SpeedView_lineColor,Color.parseColor("#FFFFFF"));
+        pointColor = ta.getColor(R.styleable.SpeedView_pointColor,Color.parseColor("#FF0000"));
+        ta.recycle()
+
         // 大刻度数组
         for (i in 180..360 step 15)
             bigMarkArr.add(i.toDouble())
@@ -95,7 +108,7 @@ class SpeedView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        canvas?.drawColor(Color.BLACK)
+        canvas?.drawColor(bgColor)
 
         drawHalf(canvas)
         drawCenter(canvas)
@@ -111,7 +124,7 @@ class SpeedView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
      */
     private fun drawHalf(canvas: Canvas?) {
         paint.isAntiAlias = true
-        paint.color = Color.WHITE
+        paint.color = lineColor
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = 10F
         arcPath!!.rewind() // 清除直线数据，保留数据结构，方便快速重用
@@ -124,7 +137,7 @@ class SpeedView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
      */
     private fun drawCenter(canvas: Canvas?) {
         val centerRadius = 3F
-        paint.color = Color.WHITE
+        paint.color = lineColor
         paint.style = Paint.Style.FILL_AND_STROKE
         canvas?.drawCircle(centerX!!, centerY!!, centerRadius, paint)
     }
@@ -133,7 +146,7 @@ class SpeedView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
      * 画大刻度
      */
     private fun drawBig(canvas: Canvas?) {
-        paint.color = Color.WHITE
+        paint.color = lineColor
         paint.strokeWidth = 10F
         paint.style = Paint.Style.FILL_AND_STROKE
         for (item in bigMarkArr) {
@@ -150,7 +163,7 @@ class SpeedView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
      * 画小刻度
      */
     private fun drawSmall(canvas: Canvas?) {
-        paint.color = Color.WHITE
+        paint.color = lineColor
         paint.strokeWidth = 5F
         paint.style = Paint.Style.FILL_AND_STROKE
         for (item in smallMarkArr) {
@@ -199,7 +212,7 @@ class SpeedView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
      * 画指针
      */
     private fun drawPointer(canvas: Canvas?) {
-        paint.color = Color.RED
+        paint.color = pointColor
         paint.strokeWidth = 8F
         // (180 + 3 * curSpeed)的意义在于把速度转换为角度
         val pointerDegree = (180 + 3 * curSpeed).toDouble()
@@ -233,7 +246,7 @@ class SpeedView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
     /**
      *  类似Math.toRadians 角度转弧度
      */
-    fun toRadians(degree:Double):Double{
+    private fun toRadians(degree:Double):Double{
         return degree/180.0*Math.PI
     }
 }
