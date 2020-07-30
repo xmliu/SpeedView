@@ -11,6 +11,7 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.ContextCompat
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -22,10 +23,28 @@ class SpeedView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
      */
     private var curSpeed: Int = -1
 
+    /**
+     * 最大速度，建议值为60、120、240等
+     */
+    private var maxSpeed:Int = 0
+    /**
+     * 背景色：默认黑色
+     */
     private var bgColor = 0
 
+    /**
+     * 刻度颜色：默认白色
+     */
     private var lineColor = 0
 
+    /**
+     * 刻度颜色：默认白色
+     */
+    private var textColor = 0
+
+    /**
+     * 指针颜色：默认红色
+     */
     private var pointColor = 0
 
     /**
@@ -70,11 +89,14 @@ class SpeedView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
     private val smallMarkArr: MutableList<Double> = mutableListOf()
     private val numberArr: MutableList<String> = mutableListOf()
 
+
     init {
         val ta = context!!.obtainStyledAttributes(attrs, R.styleable.SpeedView)
-        bgColor = ta.getColor(R.styleable.SpeedView_bgColor,Color.parseColor("#000000"));
-        lineColor = ta.getColor(R.styleable.SpeedView_lineColor,Color.parseColor("#FFFFFF"));
-        pointColor = ta.getColor(R.styleable.SpeedView_pointColor,Color.parseColor("#FF0000"));
+        bgColor = ta.getColor(R.styleable.SpeedView_bgColor,ContextCompat.getColor(context,R.color.black));
+        lineColor = ta.getColor(R.styleable.SpeedView_lineColor,ContextCompat.getColor(context,R.color.white));
+        textColor = ta.getColor(R.styleable.SpeedView_textColor,ContextCompat.getColor(context,R.color.white));
+        pointColor = ta.getColor(R.styleable.SpeedView_pointColor,ContextCompat.getColor(context,R.color.red));
+        maxSpeed = ta.getInteger(R.styleable.SpeedView_maxSpeed,60);
         ta.recycle()
 
         // 大刻度数组
@@ -84,7 +106,7 @@ class SpeedView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         for (i in 187..352 step 15)
             smallMarkArr.add(i + 0.5)
         // 速度数字数组 12组 需要和刻度数组数量相等
-        for (i in 0..60 step 5)
+        for (i in 0..maxSpeed step maxSpeed/12)
             numberArr.add(i.toString())
     }
 
@@ -180,6 +202,7 @@ class SpeedView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
      * 画数字
      */
     private fun drawNumber(canvas: Canvas?) {
+        paint.color = textColor
         paint.textSize = 25F
         paint.strokeWidth = 5F
         paint.textSkewX = 0F // 倾斜度设置为0，就是非斜体
@@ -215,7 +238,8 @@ class SpeedView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         paint.color = pointColor
         paint.strokeWidth = 8F
         // (180 + 3 * curSpeed)的意义在于把速度转换为角度
-        val pointerDegree = (180 + 3 * curSpeed).toDouble()
+        val value:Double = 180.0 / maxSpeed
+        val pointerDegree = 180 + value * curSpeed
         val radian = toRadians(pointerDegree)
         val firstX = getRoundX(radian)
         val firstY = getRoundY(radian)

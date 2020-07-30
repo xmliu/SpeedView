@@ -12,7 +12,9 @@ class MainActivity : AppCompatActivity() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             if(msg.what == 1001){
-                speedView.setCurSpeed((0..60).random())
+                val speed = (0..60).random()
+                speedView.setCurSpeed(speed)
+                speedTV.text = speed.toString()
                 sendEmptyMessageDelayed(1001,1000)
             }
         }

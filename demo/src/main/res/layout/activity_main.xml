@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/colorAccent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
@@ -10,8 +12,18 @@
             android:id="@+id/speedView"
             android:layout_gravity="center_horizontal"
             app:bgColor="#00000000"
-            app:lineColor="#000000"
+            app:lineColor="@color/colorPrimary"
+            app:textColor="#000000"
+            app:pointColor="#FFF000"
+            app:maxSpeed="60"
             android:layout_width="400dp"
             android:layout_height="220dp"/>
+
+        <TextView
+            android:id="@+id/speedTV"
+            android:layout_gravity="center_horizontal"
+            android:textSize="30sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
 </LinearLayout>
