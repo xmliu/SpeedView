@@ -15,7 +15,6 @@
             app:lineColor="@color/colorPrimary"
             app:textColor="#000000"
             app:pointColor="#FFF000"
-            app:maxSpeed="60"
             android:layout_width="400dp"
             android:layout_height="220dp"/>
 

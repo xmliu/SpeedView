@@ -1,5 +1,6 @@
 package cn.xmliu.view
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -25,6 +26,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         handler.sendEmptyMessageDelayed(1001,2000)
+
+        speedView.setTextColor(Color.parseColor("#FFFF00"))
+        speedView.setPointerColor(Color.parseColor("#BBBBBB"))
+        speedView.setMaxSpeed(240)
 
     }
 }

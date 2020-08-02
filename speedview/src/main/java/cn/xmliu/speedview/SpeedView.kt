@@ -105,9 +105,7 @@ class SpeedView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         // 小刻度数组
         for (i in 187..352 step 15)
             smallMarkArr.add(i + 0.5)
-        // 速度数字数组 12组 需要和刻度数组数量相等
-        for (i in 0..maxSpeed step maxSpeed/12)
-            numberArr.add(i.toString())
+
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -202,6 +200,11 @@ class SpeedView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
      * 画数字
      */
     private fun drawNumber(canvas: Canvas?) {
+        // 速度数字数组 12组 需要和刻度数组数量相等 不应该把变量值放在初始化方法中
+        numberArr.clear()
+        for (i in 0..maxSpeed step maxSpeed/12)
+            numberArr.add(i.toString())
+
         paint.color = textColor
         paint.textSize = 25F
         paint.strokeWidth = 5F
@@ -214,6 +217,7 @@ class SpeedView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
             val secondX = (firstX - cos(radian) * numberOffset - index * 3).toFloat()//距离微调
             val secondY = (firstY - sin(radian) * numberOffset + index).toFloat()//距离微调
             canvas?.drawText(numberArr[index], secondX, secondY, paint)
+            println("number=${numberArr[index]}")
         }
     }
 
@@ -262,8 +266,51 @@ class SpeedView(context: Context?, attrs: AttributeSet?) : View(context, attrs) 
         return centerY!! + sin(radian) * radius!!
     }
 
+    /**
+     * 设置当前速度
+     */
     fun setCurSpeed(speed: Int) {
         curSpeed = speed
+        invalidate()
+    }
+
+    /**
+     * 设置最大速度
+     */
+    fun setMaxSpeed(speed: Int) {
+        maxSpeed = speed
+        invalidate()
+    }
+
+    /**
+     * 设置线条颜色
+     */
+    fun setLineColor(color: Int){
+        lineColor = color
+        invalidate()
+    }
+
+    /**
+     * 设置文字颜色
+     */
+    fun setTextColor(color: Int){
+        textColor = color
+        invalidate()
+    }
+
+    /**
+     * 设置指针颜色
+     */
+    fun setPointerColor(color: Int){
+        pointColor = color
+        invalidate()
+    }
+
+    /**
+     * 设置背景颜色
+     */
+    fun setBgColor(color: Int){
+        bgColor = color
         invalidate()
     }
 
